@@ -3,24 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskFlow</title>
+    <title>TaskFlow - To-Do App</title>
     <link rel="stylesheet" href="style.css">
-    <script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-            .then(() => console.log("Service Worker registriert"))
-            .catch((err) => console.log("Service Worker Fehler:", err));
-    }
-    </script>
-    <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <div class="container">
-        <h1>Meine To-Do Liste</h1>
-        <input type="text" id="taskInput" placeholder="Neue Aufgabe...">
+    <!-- Startseite: Aufgabe hinzufügen -->
+    <div id="add-task-page" class="container">
+        <h1>Neue Aufgabe hinzufügen</h1>
+        <div class="input-group">
+            <input type="text" id="taskInput" placeholder="Neue Aufgabe...">
+            <select id="prioritySelect">
+                <option value="Hoch">🔴</option>
+                <option value="Mittel" selected>🟠</option>
+                <option value="Niedrig">🟢</option>
+            </select>
+        </div>
+        <input type="text" id="labelInput" placeholder="Label" list="labelOptions">
+        <datalist id="labelOptions"></datalist>
         <button onclick="addTask()">Hinzufügen</button>
-        <ul id="taskList"></ul>
+        <button onclick="showTaskList()">Zur Aufgabenliste</button>
     </div>
+
+    <!-- Aufgabenliste -->
+    <div id="task-list-page" class="container" style="display: none;">
+        <h1>Meine Aufgaben</h1>
+        <ul id="taskList"></ul>
+        <button onclick="showAddTaskPage()">Neue Aufgabe hinzufügen</button>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

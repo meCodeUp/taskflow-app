@@ -1,119 +1,101 @@
-document.addEventListener("DOMContentLoaded", loadTasks);
+document.addEventListener("DOMContentLoaded", () => {
+    loadTasks();
+    loadLabels(); // Labels beim Start laden
+});
 
 function addTask() {
-    let taskInput = document.getElementById("taskInput");
-    let taskList = document.getElementById("taskList");
+    let taskInput = document.getElementById("taskInput").value.trim();
+    let priority = document.getElementById("prioritySelect").value;
+    let label = document.getElementById("labelInput").value.trim();
 
-    if (taskInput.value.trim() === "") {
+    if (taskInput === "") {
         alert("Bitte eine Aufgabe eingeben!");
         return;
     }
 
-    let li = document.createElement("li");
-    li.innerHTML = `${taskInput.value} <button onclick="removeTask(this)">X</button>`;
-    taskList.appendChild(li);
-
-    saveTasks();
-    taskInput.value = "";
-}
-
-function removeTask(button) {
-    button.parentElement.remove();
-    saveTasks();
-}
-
-function saveTasks() {
-    let tasks = [];
-    document.querySelectorAll("#taskList li").forEach(li => {
-        tasks.push(li.textContent.replace("X", "").trim());
-    });
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks.push({ text: taskInput, priority: priority, label: label });
     localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    if (label) {
+        saveLabel(label);
+    }
+
+    document.getElementById("taskInput").value = "";
+    document.getElementById("labelInput").value = "";
+
+    showTaskList();  // Nach dem Hinzufügen zur Liste wechseln
 }
 
 function loadTasks() {
     let taskList = document.getElementById("taskList");
-
-    // Aufgabenliste leeren, bevor neue Aufgaben geladen werden
-    taskList.innerHTML = ""; 
+    if (!taskList) return;
+    taskList.innerHTML = "";
 
     let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-    tasks.forEach(task => {
+    tasks.forEach((task, index) => {
         let li = document.createElement("li");
-        li.innerHTML = `${task} <button onclick="removeTask(this)">X</button>`;
-        li.draggable = true; // Damit Drag & Drop funktioniert
+        li.innerHTML = `
+            <div class="task-item" style="border-left: 5px solid ${getPriorityColor(task.priority)};">
+                <div>
+                    <strong>${task.label || "Keine Kategorie"}</strong>: ${task.text}
+                </div>
+                <button onclick="removeTask(${index})">X</button>
+            </div>`;
         taskList.appendChild(li);
     });
-
-    enableDragAndDrop(); // Sicherstellen, dass Drag & Drop aktiviert ist
 }
 
-function removeTask(button) {
-    let li = button.parentElement;
-    li.classList.add("removing");
-    setTimeout(() => {
-        li.remove();
-        saveTasks();
-    }, 300); // Nach 300ms löschen
+function removeTask(index) {
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks.splice(index, 1);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    loadTasks();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  loadTasks();
-  enableDragAndDrop();
-});
-
-function addTask() {
-    let taskInput = document.getElementById("taskInput");
-    let taskList = document.getElementById("taskList");
-
-    if (taskInput.value.trim() === "") {
-        alert("Bitte eine Aufgabe eingeben!");
-        return;
+function getPriorityColor(priority) {
+    switch (priority) {
+        case "Hoch": return "#e74c3c";  // Rot
+        case "Mittel": return "#f39c12";  // Orange
+        case "Niedrig": return "#27ae60";  // Grün
+        default: return "#bdc3c7";  // Grau
     }
-
-    let li = document.createElement("li");
-    li.innerHTML = `${taskInput.value} <button onclick="removeTask(this)">X</button>`;
-    li.draggable = true;
-    taskList.appendChild(li);
-
-    saveTasks();
-    taskInput.value = "";
 }
 
-function enableDragAndDrop() {
-  let items = document.querySelectorAll("#taskList li");
-  items.forEach(item => {
-      item.addEventListener("dragstart", dragStart);
-      item.addEventListener("dragover", dragOver);
-      item.addEventListener("drop", drop);
-  });
+// Zeige Aufgabenliste-Seite
+function showTaskList() {
+    document.getElementById("add-task-page").style.display = "none";
+    document.getElementById("task-list-page").style.display = "block";
+    loadTasks();
 }
 
-let draggedItem = null;
-
-function dragStart(event) {
-  draggedItem = event.target;
-  event.dataTransfer.effectAllowed = "move";
+// Zeige Aufgaben-Hinzufügen-Seite
+function showAddTaskPage() {
+    document.getElementById("task-list-page").style.display = "none";
+    document.getElementById("add-task-page").style.display = "block";
 }
 
-function dragOver(event) {
-  event.preventDefault();
+// Speichere neue Labels in LocalStorage
+function saveLabel(label) {
+    let labels = JSON.parse(localStorage.getItem("labels")) || [];
+    if (!labels.includes(label)) {
+        labels.push(label);
+        localStorage.setItem("labels", JSON.stringify(labels));
+        loadLabels();  // Sofort aktualisieren
+    }
 }
 
-function drop(event) {
-  event.preventDefault();
-  if (draggedItem !== event.target) {
-      let list = document.getElementById("taskList");
-      let items = Array.from(list.children);
-      let draggedIndex = items.indexOf(draggedItem);
-      let targetIndex = items.indexOf(event.target);
+// Lade gespeicherte Labels in das Datalist
+function loadLabels() {
+    let labels = JSON.parse(localStorage.getItem("labels")) || [];
+    let dataList = document.getElementById("labelOptions");
 
-      if (draggedIndex > targetIndex) {
-          list.insertBefore(draggedItem, event.target);
-      } else {
-          list.insertBefore(draggedItem, event.target.nextSibling);
-      }
+    dataList.innerHTML = "";  // Vorherige Optionen löschen
 
-      saveTasks();
-  }
+    labels.forEach(label => {
+        let option = document.createElement("option");
+        option.value = label;
+        dataList.appendChild(option);
+    });
 }
