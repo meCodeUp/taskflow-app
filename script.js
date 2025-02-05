@@ -32,13 +32,20 @@ function saveTasks() {
 
 function loadTasks() {
     let taskList = document.getElementById("taskList");
+
+    // Aufgabenliste leeren, bevor neue Aufgaben geladen werden
+    taskList.innerHTML = ""; 
+
     let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
     tasks.forEach(task => {
         let li = document.createElement("li");
         li.innerHTML = `${task} <button onclick="removeTask(this)">X</button>`;
+        li.draggable = true; // Damit Drag & Drop funktioniert
         taskList.appendChild(li);
     });
+
+    enableDragAndDrop(); // Sicherstellen, dass Drag & Drop aktiviert ist
 }
 
 function removeTask(button) {
@@ -56,22 +63,21 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function addTask() {
-  let taskInput = document.getElementById("taskInput");
-  let taskList = document.getElementById("taskList");
+    let taskInput = document.getElementById("taskInput");
+    let taskList = document.getElementById("taskList");
 
-  if (taskInput.value.trim() === "") {
-      alert("Bitte eine Aufgabe eingeben!");
-      return;
-  }
+    if (taskInput.value.trim() === "") {
+        alert("Bitte eine Aufgabe eingeben!");
+        return;
+    }
 
-  let li = document.createElement("li");
-  li.draggable = true;
-  li.innerHTML = `${taskInput.value} <button onclick="removeTask(this)">X</button>`;
-  taskList.appendChild(li);
+    let li = document.createElement("li");
+    li.innerHTML = `${taskInput.value} <button onclick="removeTask(this)">X</button>`;
+    li.draggable = true;
+    taskList.appendChild(li);
 
-  enableDragAndDrop();
-  saveTasks();
-  taskInput.value = "";
+    saveTasks();
+    taskInput.value = "";
 }
 
 function enableDragAndDrop() {
