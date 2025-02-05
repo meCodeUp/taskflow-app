@@ -10,14 +10,14 @@ TaskFlow ist eine einfache, minimalistische To-Do-Liste als **Progressive Web Ap
 - 🌐 GitHub Pages Hosting für einfache Nutzung
 
 ## 🚀 Live-Demo
-🔗 **[Hier klicken, um die App zu nutzen](https://DEIN-GITHUB-NAME.github.io/taskflow-app/)**
+🔗 **[Hier klicken, um die App zu nutzen](https://mecodeup.github.io/taskflow-app/)**
 
 ## 🛠 Installation & Nutzung
 Falls du die App lokal starten möchtest:
 
 1. **Repository klonen**
    ```bash
-   git clone https://github.com/DEIN-GITHUB-NAME/taskflow-app.git
+   git clone https://mecodeup.github.io/taskflow-app/
    cd taskflow-app
    ```
 2. **Öffne `index.html` in einem Browser**
