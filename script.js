@@ -64,6 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function addTask() {
     let taskInput = document.getElementById("taskInput");
+    let prioritySelect = document.getElementById("prioritySelect");
+    let labelInput = document.getElementById("labelInput");
     let taskList = document.getElementById("taskList");
 
     if (taskInput.value.trim() === "") {
@@ -72,12 +74,63 @@ function addTask() {
     }
 
     let li = document.createElement("li");
-    li.innerHTML = `${taskInput.value} <button onclick="removeTask(this)">X</button>`;
     li.draggable = true;
+    li.dataset.priority = prioritySelect.value;
+    
+    let label = labelInput.value.trim() ? 
+        `<span class="task-label">${labelInput.value}</span>` : '';
+    
+    li.innerHTML = `
+        <div class="task-content">
+            ${label}
+            <span>${taskInput.value}</span>
+        </div>
+        <button onclick="removeTask(this)">X</button>`;
+        
     taskList.appendChild(li);
 
     saveTasks();
     taskInput.value = "";
+    labelInput.value = "";
+}
+
+function saveTasks() {
+    let tasks = [];
+    document.querySelectorAll("#taskList li").forEach(li => {
+        tasks.push({
+            text: li.querySelector('.task-content span:last-child').textContent,
+            priority: li.dataset.priority,
+            label: li.querySelector('.task-label')?.textContent || ''
+        });
+    });
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function loadTasks() {
+    let taskList = document.getElementById("taskList");
+    taskList.innerHTML = "";
+
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    tasks.forEach(task => {
+        let li = document.createElement("li");
+        li.draggable = true;
+        li.dataset.priority = task.priority;
+        
+        let label = task.label ? 
+            `<span class="task-label">${task.label}</span>` : '';
+        
+        li.innerHTML = `
+            <div class="task-content">
+                ${label}
+                <span>${task.text}</span>
+            </div>
+            <button onclick="removeTask(this)">X</button>`;
+            
+        taskList.appendChild(li);
+    });
+
+    enableDragAndDrop();
 }
 
 function enableDragAndDrop() {
