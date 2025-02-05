@@ -3,8 +3,8 @@
   "short_name": "TaskFlow",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#007bff",  // Hintergrundfarbe des Splash Screens
-  "theme_color": "#007bff",       // Farbe der Statusleiste (z.B. auf Android)
+  "background_color": "#92B2C0",  // Hintergrundfarbe des Splash Screens
+  "theme_color": "#92B2C0",       // Farbe der Statusleiste
   "icons": [
     {
       "src": "icon.png",
