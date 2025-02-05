@@ -35,4 +35,7 @@ Dieses Projekt steht unter der **MIT-Lizenz** – du kannst es frei nutzen und a
 
 ---
 💡 **Verbesserungsvorschläge oder Features?** Erstelle gerne ein Issue oder einen Pull-Request! 🚀
+<<<<<<< HEAD
 
+=======
+>>>>>>> fef35f54e26b9f1c47d91b83db1e23ab0855165d
