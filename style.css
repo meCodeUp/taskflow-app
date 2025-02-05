@@ -35,29 +35,6 @@ li {
   padding: 8px;
   display: flex;
   justify-content: space-between;
-  border-left: 5px solid transparent;
-}
-
-li[data-priority="high"] { border-left-color: #ff4444; }
-li[data-priority="medium"] { border-left-color: #ffbb33; }
-li[data-priority="low"] { border-left-color: #00C851; }
-
-.task-content {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.task-label {
-  font-size: 12px;
-  padding: 2px 6px;
-  border-radius: 3px;
-  background: #e0e0e0;
-}
-
-.priority-select, .label-input {
-  padding: 4px;
-  margin-right: 5px;
 }
 
 li button {
