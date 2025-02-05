@@ -31,7 +31,9 @@ Falls du die App auf dem Smartphone nutzen möchtest:
 3. Die App öffnet sich wie eine native App. ✅
 
 ## 📜 Lizenz
-Dieses Projekt steht unter der **MIT-Lizenz** – du kannst es frei nutzen und anpassen. 😊
+Dieses Projekt steht unter der **MIT-Lizenz** – du kannst es frei verwenden, verändern und verbreiten, solange der ursprüngliche Urheber genannt wird.
+
+Siehe die [LICENSE](./LICENSE)-Datei für weitere Details.
 
 ---
 💡 **Verbesserungsvorschläge oder Features?** Erstelle gerne ein Issue oder einen Pull-Request! 🚀
