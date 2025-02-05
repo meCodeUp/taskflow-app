@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", loadTasks);
 
 function addTask() {
     let taskInput = document.getElementById("taskInput");
+    let priority = document.getElementById("priority");
+    let dueDate = document.getElementById("dueDate");
     let taskList = document.getElementById("taskList");
 
     if (taskInput.value.trim() === "") {
@@ -10,7 +12,14 @@ function addTask() {
     }
 
     let li = document.createElement("li");
-    li.innerHTML = `${taskInput.value} <button onclick="removeTask(this)">X</button>`;
+    li.className = `task-${priority.value}`;
+    li.innerHTML = `
+        <span class="task-content">
+            <input type="checkbox" onchange="toggleTask(this)">
+            ${taskInput.value}
+            ${dueDate.value ? `<span class="due-date">${dueDate.value}</span>` : ''}
+        </span>
+        <button onclick="removeTask(this)">X</button>`;
     taskList.appendChild(li);
 
     saveTasks();
@@ -62,23 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
   enableDragAndDrop();
 });
 
-function addTask() {
-    let taskInput = document.getElementById("taskInput");
-    let taskList = document.getElementById("taskList");
-
-    if (taskInput.value.trim() === "") {
-        alert("Bitte eine Aufgabe eingeben!");
-        return;
-    }
-
-    let li = document.createElement("li");
-    li.innerHTML = `${taskInput.value} <button onclick="removeTask(this)">X</button>`;
-    li.draggable = true;
-    taskList.appendChild(li);
-
-    saveTasks();
-    taskInput.value = "";
-}
 
 function enableDragAndDrop() {
   let items = document.querySelectorAll("#taskList li");
@@ -116,4 +108,9 @@ function drop(event) {
 
       saveTasks();
   }
+}
+
+function toggleTask(checkbox) {
+    checkbox.parentElement.classList.toggle("completed");
+    saveTasks();
 }

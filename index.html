@@ -17,8 +17,16 @@
 <body>
     <div class="container">
         <h1>Meine To-Do Liste</h1>
-        <input type="text" id="taskInput" placeholder="Neue Aufgabe...">
-        <button onclick="addTask()">Hinzufügen</button>
+        <div class="input-group">
+            <input type="text" id="taskInput" placeholder="Neue Aufgabe...">
+            <select id="priority">
+                <option value="normal">Normal</option>
+                <option value="wichtig">Wichtig</option>
+                <option value="dringend">Dringend</option>
+            </select>
+            <input type="date" id="dueDate">
+            <button onclick="addTask()">Hinzufügen</button>
+        </div>
         <ul id="taskList"></ul>
     </div>
     <script src="script.js"></script>
